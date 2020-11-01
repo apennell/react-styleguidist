@@ -1,4 +1,6 @@
-import React, { Component } from 'react';
+// TODO: need to add check for whether to include theme select, based on config options
+
+import React, { Component, useState } from 'react';
 import PropTypes from 'prop-types';
 import TableOfContents from 'rsg-components/TableOfContents';
 import StyleGuideRenderer from 'rsg-components/StyleGuide/StyleGuideRenderer';
@@ -101,6 +103,8 @@ export default class StyleGuide extends Component<StyleGuideProps, StyleGuideSta
 			return <Welcome patterns={patterns} />;
 		}
 
+		const [theme, setTheme] = useState('');
+
 		return (
 			<Context.Provider
 				value={{
@@ -109,6 +113,8 @@ export default class StyleGuide extends Component<StyleGuideProps, StyleGuideSta
 					slots,
 					displayMode: displayMode || DisplayModes.all,
 					cssRevision,
+					theme,
+					setTheme,
 				}}
 			>
 				<StyleGuideRenderer

@@ -6,6 +6,7 @@ import Styled, { JssInjectedProps } from 'rsg-components/Styled';
 import cx from 'clsx';
 import Ribbon from 'rsg-components/Ribbon';
 import Version from 'rsg-components/Version';
+import ThemeSelect from 'rsg-components/ThemeSelect';
 import * as Rsg from '../../../typings';
 
 const styles = ({ color, fontFamily, fontSize, sidebarWidth, mq, space, maxWidth }: Rsg.Theme) => ({
@@ -90,6 +91,9 @@ export const StyleGuideRenderer: React.FunctionComponent<StyleGuideRendererProps
 						<Logo>{title}</Logo>
 						{version && <Version>{version}</Version>}
 					</header>
+					<section className={classes.sidebarSection}>
+						<ThemeSelect classes={classes} />
+					</section>
 					{toc}
 				</div>
 			)}

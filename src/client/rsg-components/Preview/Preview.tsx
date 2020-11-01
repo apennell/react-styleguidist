@@ -1,3 +1,9 @@
+/**
+ * TODO: figure out if this was best approach... here is where I added contect wrapper around
+ * example to pass theme context to all examples; maybe I don't need to? Maybe I can make different
+ * use of context? :shrug:
+ */
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
@@ -18,6 +24,7 @@ interface PreviewProps {
 
 interface PreviewState {
 	error: string | null;
+	brand: string | null;
 }
 
 export default class Preview extends Component<PreviewProps, PreviewState> {
@@ -31,6 +38,7 @@ export default class Preview extends Component<PreviewProps, PreviewState> {
 
 	public state: PreviewState = {
 		error: null,
+		brand: '',
 	};
 
 	public componentDidMount() {
@@ -49,7 +57,7 @@ export default class Preview extends Component<PreviewProps, PreviewState> {
 	}
 
 	public componentDidUpdate(prevProps: PreviewProps) {
-		if (this.props.code !== prevProps.code) {
+		if (this.props.code !== prevProps.code || this.context.theme !== this.state.theme) {
 			this.executeCode();
 		}
 	}
@@ -75,12 +83,15 @@ export default class Preview extends Component<PreviewProps, PreviewState> {
 		}
 
 		const wrappedComponent: React.FunctionComponentElement<any> = (
-			<ReactExample
-				code={code}
-				evalInContext={this.props.evalInContext}
-				onError={this.handleError}
-				compilerConfig={this.context.config.compilerConfig}
-			/>
+			// TODO: ...or just a note: I added Context.Provider here; may only want to pass theme context?
+			<Context.Provider value={this.context}>
+				<ReactExample
+					code={code}
+					evalInContext={this.props.evalInContext}
+					onError={this.handleError}
+					compilerConfig={this.context.config.compilerConfig}
+				/>
+			</Context.Provider>
 		);
 
 		window.requestAnimationFrame(() => {
@@ -107,7 +118,7 @@ export default class Preview extends Component<PreviewProps, PreviewState> {
 		const { error } = this.state;
 		return (
 			<>
-				<div data-testid="mountNode" ref={ref => (this.mountNode = ref)} />
+				<div data-testid="mountNode" ref={(ref) => (this.mountNode = ref)} />
 				{error && <PlaygroundError message={error} />}
 			</>
 		);
